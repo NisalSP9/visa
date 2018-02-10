@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#example').DataTable( {
+    var visatable = $('#example').DataTable( {
         responsive: true,
         orderCellsTop: true,
         autoWidth: false,
@@ -55,13 +55,13 @@ $(document).ready(function() {
                 className: 'btn-primary',
                 container: '#b3',
                 action: function (e, dt, node, config) {
-                    window.location.href = "#/new_hotel";
+                    $('#create-visa-modal').modal()
                 }
             },
             'copyHtml5',
             'excelHtml5',
             'csvHtml5',
-            'pdfHtml5',
+            'pdfHtml5'
             // {
             //     extend: 'colvis',
             //     text: '<i class="fa fa-gears"></i>',
@@ -80,5 +80,83 @@ $(document).ready(function() {
             </div>';
 
     $("#b3").append(settings);
+
+
+    // Handle row deletion
+    $("#td-delete").on('click', function () {
+        if (visatable.column(0).checkboxes.selected().length > 0) {
+            $("#confirm-delete").modal();
+        }
+    });
+
+    $("#btn-delete").on('click', function () {
+        var id = visatable.column(0).checkboxes.selected();
+        $.each(id, function (k, v) {
+            DeleteVisa(v.visaID);
+        });
+        $("#confirm-delete").modal('hide');
+        visatable.ajax.reload();
+    });
+
+
+    $("#btn-visa-save").on('click',function () {
+       var visa = JSON.stringify({
+           "visaCountry":$("#country").val(),
+           "visaGroupName":$("#visaGroupName").val(),
+           "visaType":$("#visaType").val(),
+           "visaTypeEntry":$("#visaTypeEntry").val(),
+           "visaAgent":$("#visaAgent").val(),
+           "visaSubmitByOther":$("#visaSubmitByOther").val(),
+           "visaQueAppoinnt":$("#visaQueAppoinnt").val(),
+           "visaApprovePeriod":$("#visaApprovePeriod").val(),
+           "visaRealPrice":$("#visaRealPrice").val(),
+           "visaOfficialAgentCharge":$("#visaOfficialAgentCharge").val(),
+           "visaSupplierCharge":$("#visaSupplierCharge").val(),
+           "visaSupplier":$("#visaSupplier").val(),
+           "visaSellingPrice":$("#visaSellingPrice").val(),
+           "visaRemark":$("#visaRemark").val(),
+           "visaUpdateDateChar":$("#visaUpdateDateChar").val(),
+           "visaUpdateDate":$("#visaUpdateDate").val(),
+           "visaUpdateBy":$("#visaUpdateBy").val()
+        })
+
+        createVisa(visa)
+
+    });
+
+
+    function createVisa(visa) {
+
+        return $.ajax({
+            url: "/api/visa/post",
+            type: "POST",
+            contentType: "application/json",
+            data: visa,
+            error: function (e) {
+                console.log(e)
+            },
+            success: function (response) {
+                alert("Created");
+            }
+
+        });
+
+    }
+
+    function DeleteVisa(id) {
+        return $.ajax({
+            url: "/api/visa/delete?visaID=" + id,
+            type: "DELETE",
+            contentType: "application/json",
+            error: function (e) {
+                console.log(e)
+            },
+            success: function (response) {
+                //alert("delete");
+            }
+
+        });
+    }
+
 
 } );

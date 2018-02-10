@@ -135,3 +135,29 @@ func CreateData(visa models.Visa){
 	}
 
 }
+
+const DELETE_DATA  = `DELETE FROM tbl_th_visa WHERE th_visa_ID = ? ;`
+
+func DeteleData(id string){
+
+	db := DBConnection.GetConnection()
+
+	Stmt,err := db.Prepare(DELETE_DATA)
+
+	if err != nil{
+
+		println(err.Error())
+
+	}
+
+	defer Stmt.Close()
+
+	_,err = Stmt.Exec(id)
+
+	if err != nil {
+
+		println(err.Error())
+
+	}
+
+}

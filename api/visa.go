@@ -26,3 +26,8 @@ func CreateData(w http.ResponseWriter, r *http.Request){
 	}
 	controller.CreateData(visa)
 }
+
+func DeleteData(w http.ResponseWriter, r *http.Request){
+	id := r.URL.Query().Get("visaID")
+	controller.DeteleData(id)
+}
