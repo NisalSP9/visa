@@ -13,8 +13,8 @@ func main() {
 	http.Handle("/api/", router)
 
 	//Starting the FileServer
-	//fs := http.FileServer(http.Dir("server/webapps/play_maths"))
-	//http.Handle("/", fs)
+	fs := http.FileServer(http.Dir("server/webapps/visa/components/visa_data"))
+	http.Handle("/", fs)
 
 	log.Println("Listening...")
 	log.Fatal(http.ListenAndServe(":3000", nil))
