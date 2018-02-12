@@ -11,5 +11,6 @@ func VisaRoutes() *mux.Router  {
 	router.HandleFunc("/api/visa/get", api.GetAllData)
 	router.HandleFunc("/api/visa/post", api.CreateData)
 	router.HandleFunc("/api/visa/delete", api.DeleteData)
+	router.HandleFunc("/api/visa/update", api.UpdateData)
 	return router
 }

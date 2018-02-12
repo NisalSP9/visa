@@ -31,3 +31,13 @@ func DeleteData(w http.ResponseWriter, r *http.Request){
 	id := r.URL.Query().Get("visaID")
 	controller.DeteleData(id)
 }
+
+func UpdateData(w http.ResponseWriter, r *http.Request){
+	decoder := json.NewDecoder(r.Body)
+	var visa models.Visa
+	err := decoder.Decode(&visa)
+	if err != nil{
+		println(err.Error())
+	}
+	controller.UpdateData(visa)
+}

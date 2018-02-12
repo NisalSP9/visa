@@ -161,3 +161,44 @@ func DeteleData(id string){
 	}
 
 }
+
+const UPDATE_DATA = `UPDATE tbl_th_visa SET th_visa_country = ?, th_visa_groupname = ?, th_visa_type = ?, th_visa_type_entry = ?, th_visa_agent = ? , th_visa_submit_byother = ? , th_visa_que_appoinnt = ? , th_visa_approve_period = ? , th_visa_real_price = ?, th_visa_official_agent_charge = ?, th_visa_supplier_charge = ?, th_visa_supplier = ?, th_visa_selling_price = ?, th_visa_remark = ?, th_visa_update_date_char = ?, th_visa_update_date = ?, th_visa_update_by = ? WHERE th_visa_ID = ? ;`
+
+func UpdateData (visa models.Visa) {
+
+	db := DBConnection.GetConnection()
+
+	Stmt,err := db.Prepare(UPDATE_DATA)
+
+	if err != nil {
+		println(err.Error())
+	}
+
+	defer Stmt.Close()
+
+	_ , err = Stmt.Exec(
+		visa.VisaCountry,
+		visa.VisaGroupName,
+		visa.VisaType,
+		visa.VisaTypeEntry,
+		visa.VisaAgent,
+		visa.VisaSubmitByOther,
+		visa.VisaQueAppoinnt,
+		visa.VisaApprovePeriod,
+		visa.VisaRealPrice,
+		visa.VisaOfficialAgentCharge,
+		visa.VisaSupplierCharge,
+		visa.VisaSupplier,
+		visa.VisaSellingPrice,
+		visa.VisaRemark,
+		visa.VisaUpdateDateChar,
+		visa.VisaUpdateDate,
+		visa.VisaUpdateBy,
+		visa.VisaID,
+	)
+
+	if err != nil {
+		println(err.Error())
+	}
+
+}

@@ -99,6 +99,65 @@ $(document).ready(function() {
     });
 
 
+    // Handle row edit
+    $("#td-edit").on('click', function () {
+        if (visatable.column(0).checkboxes.selected().length == 1) {
+            var id = visatable.column(0).checkboxes.selected();
+            $.each(id, function (k, v) {
+                //DeleteVisa(v.visaID);//editid
+                $("#editid").val(v.visaID);
+                $("#editcountry").val(v.visaCountry);
+                $("#editvisaGroupName").val(v.visaGroupName);
+                $("#editvisaType").val(v.visaType);
+                $("#editvisaTypeEntry").val(v.visaTypeEntry);
+                $("#editvisaAgent").val(v.visaAgent);
+                $("#editvisaSubmitByOther").val(v.visaSubmitByOther);
+                $("#editvisaQueAppoinnt").val(v.visaQueAppoinnt);
+                $("#editvisaApprovePeriod").val(v.visaApprovePeriod);
+                $("#editvisaRealPrice").val(v.visaRealPrice);
+                $("#editvisaOfficialAgentCharge").val(v.visaOfficialAgentCharge);
+                $("#editvisaSupplierCharge").val(v.visaSupplierCharge);
+                $("#editvisaSupplier").val(v.visaSupplier);
+                $("#editvisaSellingPrice").val(v.visaSellingPrice);
+                $("#editvisaRemark").val(v.visaRemark);
+                $("#editvisaUpdateDateChar").val(v.visaUpdateDateChar);
+                $("#editvisaUpdateDate").val(v.visaUpdateDate);
+                $("#editvisaUpdateBy").val(v.visaUpdateBy);
+            });
+            $("#edit-visa-modal").modal();
+        }
+    });
+
+
+    //btn-visa-edit
+
+    $("#btn-visa-edit").on('click',function () {
+        var visa = JSON.stringify({
+            "visaID":parseInt($("#editid").val()),
+            "visaCountry":$("#editcountry").val(),
+            "visaGroupName":$("#editvisaGroupName").val(),
+            "visaType":$("#editvisaType").val(),
+            "visaTypeEntry":$("#editvisaTypeEntry").val(),
+            "visaAgent":$("#editvisaAgent").val(),
+            "visaSubmitByOther":$("#editvisaSubmitByOther").val(),
+            "visaQueAppoinnt":$("#editvisaQueAppoinnt").val(),
+            "visaApprovePeriod":$("#editvisaApprovePeriod").val(),
+            "visaRealPrice":$("#editvisaRealPrice").val(),
+            "visaOfficialAgentCharge":$("#editvisaOfficialAgentCharge").val(),
+            "visaSupplierCharge":$("#editvisaSupplierCharge").val(),
+            "visaSupplier":$("#editvisaSupplier").val(),
+            "visaSellingPrice":$("#editvisaSellingPrice").val(),
+            "visaRemark":$("#editvisaRemark").val(),
+            "visaUpdateDateChar":$("#editvisaUpdateDateChar").val(),
+            "visaUpdateDate":$("#editvisaUpdateDate").val(),
+            "visaUpdateBy":$("#editvisaUpdateBy").val()
+        });
+
+        updateVisa(visa)
+
+    });
+
+
     $("#btn-visa-save").on('click',function () {
        var visa = JSON.stringify({
            "visaCountry":$("#country").val(),
@@ -118,7 +177,7 @@ $(document).ready(function() {
            "visaUpdateDateChar":$("#visaUpdateDateChar").val(),
            "visaUpdateDate":$("#visaUpdateDate").val(),
            "visaUpdateBy":$("#visaUpdateBy").val()
-        })
+        });
 
         createVisa(visa)
 
@@ -137,6 +196,24 @@ $(document).ready(function() {
             },
             success: function (response) {
                 alert("Created");
+            }
+
+        });
+
+    }
+
+    function updateVisa(visa) {
+
+        return $.ajax({
+            url: "/api/visa/update",
+            type: "PUT",
+            contentType: "application/json",
+            data: visa,
+            error: function (e) {
+                console.log(e)
+            },
+            success: function (response) {
+                alert("Updated");
             }
 
         });
